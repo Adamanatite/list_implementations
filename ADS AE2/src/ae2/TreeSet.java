@@ -2,15 +2,25 @@ package ae2;
 
 import java.util.Arrays;
 
+/**
+ * An implementation of the set ADT using a binary search tree
+ * 
+ * Student solution to ADS Assessed Exercise 2
+ * 
+ * @author Adam Fairlie <2461352f@student.gla.ac.uk>
+ */
 public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>{
-
-	private Node root; // root of BST
-	private int size; //size of BST
+	/*The root of the BST*/
+	private Node root;
+	/*The size of the BST*/
+	private int size;
 	
-	
+	/*A nested class representing each item in the tree*/
 	private class Node{
+		/*Value held by node*/
 		private Item key; // value held by node
-		private Node left, right, p; //left and right subtree and parent node
+		/*Pointers to left subtree, right subtree and parent node*/
+		private Node left, right, p;
 
 		public Node(Item key) {
 			this.key = key;
@@ -20,13 +30,17 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 	
-	
+	/*Class constructor*/
 	public TreeSet(){
 		root = null;
 		size = 0;
 	}
 	
-	
+	/**
+	 * Converts this set to a ListSet
+	 * 
+	 * @return l The linked list implementation of this set
+	 */
 	public ListSet<Item> asList(){
 		//start recursion at root
 		ListSet<Item> l = new ListSet<Item>();
@@ -34,7 +48,11 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return l;
 	}
 	
-	
+	/**
+	 * Converts the subtree with pointer x to a ListSet
+	 * 
+	 * @param x The node to begin conversion at
+	 */
 	private void asList(ListSet<Item> L, Node x){
 		//traverse tree in order and add each element to list
 		if(x != null) {
@@ -44,7 +62,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 	
-	
+	/**
+	 * Returns the node with the minimum value in the subtree with root x
+	 * 
+	 * @param x The root of the subtree
+	 * @return x The node with minimum element in the subtree
+	 */
 	public Node min(Node x) {
 		//Go to end of leftmost branch
 		while(x.left != null) {
@@ -53,12 +76,22 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return x;
 	}
 	
-	
+	/**
+	 * Returns the minimum value in the tree
+	 * 
+	 * @param x The root of the tree
+	 * @return k The minimum value of the tree
+	 */
 	public Item min_value(Node x) {
 		return min(x).key;
 	}
 	
-	
+	/**
+	 * Returns the node with the maximum value in the subtree with root x
+	 * 
+	 * @param x The root of the subtree
+	 * @return x The node with maximum element in the subtree
+	 */
 	public Node max(Node x) {
 		//Go to end of rightmost branch
 		while(x.right != null) {
@@ -67,12 +100,21 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return x;
 	}
 	
-	
+	/**
+	 * Returns the maximum value in the tree
+	 * 
+	 * @param x The root of the tree
+	 * @return k The maximum value of the tree
+	 */
 	public Item max_value(Node x) {
 		return max(x).key;
 	}
 	
-	
+	/**
+	 * Adds an node to the set
+	 * 
+	 * @param z The node to add
+	 */
 	private void add (Node z) {
 		Node y = null;
 		Node x = this.root;
@@ -104,6 +146,11 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.size++;
 	}
 	
+	/**
+	 * Adds an item to the set
+	 * 
+	 * @param x The item to add
+	 */
 	@Override
 	public void add(Item x) {
 		//Create node to add
@@ -111,7 +158,13 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.add(n);
 	}
 	
-	
+	/**
+	 * Searches for an item in the set and returns it if it finds it
+	 * 
+	 * @param x The root node to begin searching from
+	 * @param k The key to search for
+	 * @return Node The node with the corresponding key, or null if it doesn't exist
+	 */
 	private Node Search(Node x, Item k) {
 		//Base case if current node is empty or equal to item
 		if(x == null || x.key.compareTo(k) == 0) {
@@ -124,12 +177,22 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return Search(x.right, k);
 	}
 	
+	/**
+	 * Searches the tree for an element k
+	 * 
+	 * @param k The key to search for
+	 * @return Node The node with the corresponding key, or null if it doesn't exist
+	 */
 	public Node Search(Item k) {
 		//Start recursion at root
 		return Search(this.root, k);
 	}
 	
-	
+	/**
+	 * Removes a node from the set
+	 * 
+	 * @param z The node to remove
+	 */
 	private void remove(Node z) {
 		//If no left branch, cut element from right branch
 		if(z.left == null) {
@@ -162,6 +225,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		
 	}
 	
+	/**
+	 * Replaces a node u with new node v
+	 * 
+	 * @param u The node to replace
+	 * @param v The replacement node
+	 */
 	private void transplant(Node u, Node v) {
 		if(u.p == null) {
 			this.root = v;
@@ -178,6 +247,11 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 	
+	/**
+	 * Removes an item from the set if it exists
+	 * 
+	 * @param x The item to remove
+	 */
 	@Override
 	public void remove(Item x) {
 		//Remove node if found
@@ -187,17 +261,34 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 
+	/**
+	 * Returns whether a given key is present in the set
+	 * 
+	 * @param x The key to check
+	 * @return True if the element is present, otherwise false
+	 */
 	@Override
 	public boolean is_element(Item x) {
 		//return if element can be found
 		return this.Search(x) != null;
 	}
 
+	/**
+	 * Returns the current size of the set
+	 * 
+	 * @return size The size of this set
+	 */
 	@Override
 	public int set_size() {
 		return this.size;
 	}
 
+	/**
+	 * Returns a union of this set and the given set T
+	 * 
+	 * @param T The set to union this set with
+	 * @return U The union of this set and T
+	 */
 	@Override
 	public TreeSet<Item> union(AbstractSet<Item> T) {
 		ListSet<Item> u;
@@ -213,6 +304,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		
 	}
 
+	/**
+	 * Returns the intersection of this set and given set T
+	 * 
+	 * @param T The set to intersect this set with
+	 * @return I The intersection of this set with T
+	 */
 	@Override
 	public TreeSet<Item> intersection(AbstractSet<Item> T) {
 		ListSet<Item> x;
@@ -226,6 +323,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return createBalancedTree(x.toArray());
 	}
 
+	/**
+	 * Returns the difference of this set and a given set T
+	 * 
+	 * @param T The set to difference this set with
+	 * @return D The difference of this set and T
+	 */
 	@Override
 	public TreeSet<Item> difference(AbstractSet<Item> T) {
 		ListSet<Item> d;
@@ -239,6 +342,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return createBalancedTree(d.toArray());
 	}
 
+	/**
+	 * Returns whether this set is a subset of given set T
+	 * 
+	 * @param T The set to check if this set is a subset of
+	 * @return True if this set is a subset of T, False otherwise
+	 */
 	@Override
 	public boolean subset(AbstractSet<Item> T) {
 		//Convert to lists and use subset from the list implementation
@@ -249,6 +358,14 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 	
+	/**
+	 * Creates a balanced tree from a subarray of A
+	 * 
+	 * @param A the array to create a tree from
+	 * @param l The left index of the subarray
+	 * @param r The right index of the subarray
+	 * @return n The node representing the head of the subtree
+	 */
 	private Node createBalancedTree(Item[] A, int l, int r){
 		//If left and right indices overlap, return an empty node
 		if(l > r) {
@@ -267,7 +384,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return n;
 	}
 	
-	
+	/**
+	 * Creates a balanced tree from an array A
+	 * 
+	 * @param A The array to create a tree from
+	 * @return T The TreeSet created from A
+	 */
 	private TreeSet<Item> createBalancedTree(Item[] A) {
 		System.out.println("Array: " + Arrays.toString(A));
 		//If array is empty, return empty tree
@@ -284,7 +406,12 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return T;
 	}
 	
-	
+	/**
+	 * Returns the height of the subtree with node x
+	 * 
+	 * @param x The root of the subtree
+	 * @return h The height of the subtree
+	 */
 	private int height(Node x) {
 		//base case for leaf element
 		if(x == null) {
@@ -294,13 +421,21 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return 1 + Math.max(height(x.left), height(x.right));
 	}
 	
-	
+	/**
+	 * Returns the height of this tree
+	 * 
+	 * @return h The height of the tree
+	 */
 	public int height() {
 		//start recursion at root
 		return height(this.root);
 	}
 	
-	
+	/**
+	 * Prints the subtree with root x using inorder traversal
+	 * 
+	 * @param x The root of the subtree
+	 */
 	private void inOrder(Node x) {
 		//Print elements in order
 		if(x != null) {
@@ -309,7 +444,11 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 			inOrder(x.right);	
 		}
 	}
-	
+
+	/**
+	 * Prints the tree in order using inorder traversal
+	 * 
+	 */
 	@Override
 	public void print() {
 		//Print if empty
@@ -321,6 +460,5 @@ public class TreeSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		inOrder(this.root);
 		System.out.println();
 	}
-	
 	
 }

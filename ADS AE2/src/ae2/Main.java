@@ -9,13 +9,23 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+/**
+ * The main class for testing the set implementations
+ * 
+ * Student solution to ADS Assessed Exercise 2
+ * 
+ * @author Adam Fairlie <2461352f@student.gla.ac.uk>
+ */
 public class Main {
-
+	
+	/*Main constructor*/
 	public static void main(String[] args) {
-		//test data structures
 		testStructures();	
 	}
 
+	/**
+	 * Tests the given implementations at size 20k to search for 100 elements
+	 */
 	public static void testStructures() {
 		//get test data file
 		Path file = Paths.get("src/int20k.txt");

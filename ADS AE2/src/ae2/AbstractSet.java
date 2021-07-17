@@ -1,5 +1,12 @@
 package ae2;
 
+/**
+ * Interface for the set ADT and its required methods
+ * 
+ * Student solution to ADS Assessed Exercise 2
+ * 
+ * @author Adam Fairlie <2461352f@student.gla.ac.uk>
+ */
 public interface AbstractSet<Item extends Comparable<Item>> {
 	
 	//Standard operations
@@ -20,12 +27,22 @@ public interface AbstractSet<Item extends Comparable<Item>> {
 	//Useful shared methods
 	void print();
 	
+	/**
+	 * Adds all of a list into the set at once
+	 * 
+	 * @param a The list or other iterable
+	 */
 	default void addAll(Iterable<Item> a) {
 		for(Item i : a) {
 			this.add(i);
 		}
 	}
 	
+	/**
+	 * Adds all of an array into the set at once
+	 * 
+	 * @param a The array
+	 */
 	default void addAll(Item[] a) {
 		for(Item i : a) {
 			this.add(i);

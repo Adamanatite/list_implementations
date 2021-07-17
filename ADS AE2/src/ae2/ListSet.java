@@ -1,14 +1,24 @@
 package ae2;
 
+/**
+ * An implementation of the set ADT using a linked list
+ * 
+ * Student solution to ADS Assessed Exercise 2
+ * 
+ * @author Adam Fairlie <2461352f@student.gla.ac.uk>
+ */
 public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>{
-
-	private Node head, tail; // head and tail of list
-	private int size; // size of set
+	/*Head and tail of list*/
+	private Node head, tail;
+	/*Size of set*/
+	private int size;
 	
-	
+	/*A nested class representing each item in the list*/
 	private class Node{
-		private Item key; // sorted by key
-		private Node prev, next; //next and previous elements in list
+		/*Value stored in node*/
+		private Item key;
+		/*Pointers to previous and next elements in list*/
+		private Node prev, next;
 
 		public Node(Item key) {
 			this.key = key;
@@ -17,6 +27,7 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}
 	}
 	
+	/*Class constructor*/
 	public ListSet(){
 		head = null;
 		tail = null;
@@ -26,7 +37,11 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 	
 	//METHODS
 	
-	
+	/**
+	 * Adds an node to the set
+	 * 
+	 * @param x The node to add
+	 */
 	private void add(Node x) {
 		
 		//If x is the first element
@@ -74,6 +89,11 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.size++;
 	}	
 	
+	/**
+	 * Adds an item to the set
+	 * 
+	 * @param x The item to add
+	 */
 	@Override
 	public void add(Item x) {
 		//create node and add
@@ -81,6 +101,12 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.add(n);
 	}
 	
+	/**
+	 * Searches for a key in the set and returns it if it finds it
+	 * 
+	 * @param k The key to search for
+	 * @return Node The node with the corresponding key, or null if it doesn't exist
+	 */
 	private Node search(Item k) {
 		Node x = this.head;
 		//loop until end of list or until an equal or larger element is found
@@ -94,7 +120,11 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return null;
 	}
 	
-	
+	/**
+	 * Removes a node from the set
+	 * 
+	 * @param x The node to remove
+	 */
 	private void remove(Node x) {
 		//connect node before x to node after x, or make x.next the new head
 		if(x.prev != null) {
@@ -113,6 +143,11 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.size--;
 	}
 	
+	/**
+	 * Removes an item from the set if it exists
+	 * 
+	 * @param x The item to remove
+	 */
 	@Override
 	public void remove(Item x) {
 		//remove node if found
@@ -122,18 +157,34 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		}		
 	}
 
+	/**
+	 * Returns whether a given key is present in the set
+	 * 
+	 * @param x The key to check
+	 * @return True if the element is present, otherwise false
+	 */
 	@Override
 	public boolean is_element(Item x) {
 		//return if node can be found
 		return this.search(x) != null;
 	}
 
+	/**
+	 * Returns the current size of the set
+	 * 
+	 * @return size The size of this set
+	 */
 	@Override
 	public int set_size() {
 		return this.size;
 	}
 
-	
+	/**
+	 * Returns a union of this set and the given set T
+	 * 
+	 * @param T The set to union this set with
+	 * @return U The union of this set and T
+	 */
 	public ListSet<Item> union(AbstractSet<Item> T) {
 		
 		//If tree, convert to list
@@ -182,7 +233,12 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return u;
 	}
 
-	
+	/**
+	 * Returns the intersection of this set and given set T
+	 * 
+	 * @param T The set to intersect this set with
+	 * @return I The intersection of this set with T
+	 */
 	public ListSet<Item> intersection(AbstractSet<Item> T) {
 		
 		//If tree, convert to list
@@ -216,7 +272,12 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return x;
 	}
 
-	
+	/**
+	 * Returns the difference of this set and a given set T
+	 * 
+	 * @param T The set to difference this set with
+	 * @return D The difference of this set and T
+	 */
 	public ListSet<Item> difference(AbstractSet<Item> T) {
 		
 		//If tree, convert to list
@@ -256,13 +317,23 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		return d;	
 	}
 
+	/**
+	 * Returns whether this set is a subset of given set T
+	 * 
+	 * @param T The set to check if this set is a subset of
+	 * @return True if this set is a subset of T, False otherwise
+	 */
 	@Override
 	public boolean subset(AbstractSet<Item> T) {
 		//check if difference is empty
 		return this.difference(T).set_empty();
 	}
 
-	//Insert single value to the tail
+	/**
+	 * Inserts a node at the tail of this list
+	 * 
+	 * @param x The node to insert
+	 */
 	private void insert_tail(Node x) {
 		//If no elements, make x the head
 		if(this.tail == null) {
@@ -281,12 +352,22 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		this.size++;
 	}
 	
+	/**
+	 * Inserts a key at the tail of this list
+	 * 
+	 * @param k The key to insert
+	 */
 	public void insert_tail (Item k) {
 		//Create node and insert to tail
 		Node n = new Node(k);
 		this.insert_tail(n);
 	}
 	
+	/**
+	 * Converts this set to an array of items
+	 * 
+	 * @return a The array equivalent of this set
+	 */
 	public Item[] toArray() {
 		
 		if(this.set_empty()) {
@@ -306,6 +387,9 @@ public class ListSet<Item extends Comparable<Item>> implements AbstractSet<Item>
 		
 	}
 	
+	/**
+	 * Prints the contents of this set
+	 */
 	@Override
 	public void print() {
 		
